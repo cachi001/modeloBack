@@ -9,9 +9,10 @@ import java.util.Optional;
 
 @Service
 public class CategoriaService extends BaseServiceImpl<Categoria, Long>{
-
+    private final CategoriaRepository categoriaRepository;
     public CategoriaService(CategoriaRepository categoriaRepository) {
         super(categoriaRepository);
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
@@ -37,5 +38,14 @@ public class CategoriaService extends BaseServiceImpl<Categoria, Long>{
     @Override
     public void deleteById(Long aLong) {
         super.deleteById(aLong);
+    }
+    public List<Categoria> findByCategoriaPadreId(Long padreId) {
+        return categoriaRepository.findByCategoriaPadreId(padreId);
+    }
+    public Categoria findByCategoria(String denominacion){
+        Categoria categoria = categoriaRepository.findByDenominacion(denominacion)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
+
+        return categoria;
     }
 }

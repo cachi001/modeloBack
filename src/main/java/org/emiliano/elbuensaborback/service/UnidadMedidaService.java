@@ -10,9 +10,12 @@ import java.util.Optional;
 @Service
 public class UnidadMedidaService extends BaseServiceImpl<UnidadMedida, Long>{
 
+    private final UnidadMedidaRepository unidadMedidaRepository;
+
     public UnidadMedidaService (UnidadMedidaRepository unidadMedidaRepository)
     {
         super(unidadMedidaRepository);
+        this.unidadMedidaRepository = unidadMedidaRepository;
     }
 
     @Override
@@ -38,5 +41,11 @@ public class UnidadMedidaService extends BaseServiceImpl<UnidadMedida, Long>{
     @Override
     public void deleteById(Long aLong) {
         super.deleteById(aLong);
+    }
+
+    public UnidadMedida findByDenominacion(String denominacion){
+        UnidadMedida unidadMedida = unidadMedidaRepository.findByDenominacion(denominacion)
+                .orElseThrow(() -> new RuntimeException("Unidad de Medida no encontrada"));
+        return unidadMedida;
     }
 }

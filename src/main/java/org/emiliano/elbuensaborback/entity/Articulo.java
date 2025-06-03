@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public abstract class Articulo implements Serializable {
     private Long id;
 
     private String denominacion;
-    private Double precioVenta;
+    private BigDecimal precioVenta;
 
     @ManyToOne
     @JoinColumn(name = "unidad_medida_id")
