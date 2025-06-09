@@ -20,4 +20,6 @@ public class ArticuloManufacturadoDetalle {
     @ManyToOne
     @JoinColumn(name = "articulo_insumo_id")
     private ArticuloInsumo articuloInsumo;
+
+
 }

@@ -24,6 +24,9 @@ public abstract class Articulo implements Serializable {
     private String denominacion;
     private BigDecimal precioVenta;
 
+    @Column(nullable = false)
+    private boolean activo = true;
+
     @ManyToOne
     @JoinColumn(name = "unidad_medida_id")
     private UnidadMedida unidadMedida;

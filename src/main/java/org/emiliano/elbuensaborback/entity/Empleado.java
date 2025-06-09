@@ -18,8 +18,10 @@ public class Empleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Rol rol;
 

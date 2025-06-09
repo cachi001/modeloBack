@@ -18,13 +18,28 @@ public class Promocion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String denominacion;
+
+    @Column(nullable = false)
     private LocalDate fechaDesde;
+
+    @Column(nullable = false)
     private LocalDate fechaHasta;
+
+    @Column(nullable = false)
     private LocalTime horaDesde;
+
+    @Column(nullable = false)
     private LocalTime horaHasta;
+
+    @Column(nullable = false)
     private String descripcionDescuento;
+
+    @Column(nullable = false)
     private BigDecimal precioPromocional;
+
 
     @OneToOne
     @JoinColumn(name = "tipo_promocion_id")

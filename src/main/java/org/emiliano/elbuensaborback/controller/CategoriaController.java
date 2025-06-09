@@ -1,7 +1,7 @@
 package org.emiliano.elbuensaborback.controller;
 
-import org.emiliano.elbuensaborback.dto.CategoriaDto;
-import org.emiliano.elbuensaborback.dto.CategoriaResponseDto;
+import org.emiliano.elbuensaborback.dto.CategoriaRequest;
+import org.emiliano.elbuensaborback.dto.CategoriaResponse;
 import org.emiliano.elbuensaborback.entity.Categoria;
 import org.emiliano.elbuensaborback.mapper.CategoriaMapper;
 import org.emiliano.elbuensaborback.service.CategoriaService;
@@ -26,33 +26,33 @@ public class CategoriaController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearCategoria(@RequestBody CategoriaDto categoriaDto) {
+    public ResponseEntity<?> crearCategoria(@RequestBody CategoriaRequest categoriaRequest) {
         try {
             System.out.println("CREANDO CATEGORIA...");
 
             Categoria nuevaCategoria;
 
-            System.out.println("ID" + categoriaDto.getCategoriaPadreId()+ "denominacion" +  categoriaDto.getDenominacion());
-            if (categoriaDto.getCategoriaPadreId() != null) {
-                Optional<Categoria> categoriaPadreOp = categoriaService.findById(categoriaDto.getCategoriaPadreId());
+            System.out.println("ID" + categoriaRequest.getCategoriaPadreId()+ "denominacion" +  categoriaRequest.getDenominacion());
+            if (categoriaRequest.getCategoriaPadreId() != null) {
+                Optional<Categoria> categoriaPadreOp = categoriaService.findById(categoriaRequest.getCategoriaPadreId());
                 if (categoriaPadreOp.isEmpty()) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Categoría padre no encontrada");
                 }
 
                 nuevaCategoria = Categoria.builder()
-                        .denominacion(categoriaDto.getDenominacion())
+                        .denominacion(categoriaRequest.getDenominacion())
                         .categoriaPadre(categoriaPadreOp.get())
                         .build();
             } else {
                 nuevaCategoria = Categoria.builder()
-                        .denominacion(categoriaDto.getDenominacion())
+                        .denominacion(categoriaRequest.getDenominacion())
                         .categoriaPadre(null)
                         .build();
             }
 
             Categoria categoriaGuardada = categoriaService.save(nuevaCategoria);
 
-            CategoriaResponseDto categoriaDtoRespuesta = categoriaMapper.toResponseDto(categoriaGuardada);
+            CategoriaResponse categoriaDtoRespuesta = categoriaMapper.toResponseDto(categoriaGuardada);
 
             System.out.println("ID: " + categoriaDtoRespuesta.id());
             System.out.println("Denominación: " + categoriaDtoRespuesta.denominacion());
@@ -81,9 +81,9 @@ public class CategoriaController {
 
             List<Categoria> listaCategorias = categoriaService.findAll();
 
-            List<CategoriaResponseDto> listaDto = new ArrayList<>();
+            List<CategoriaResponse> listaDto = new ArrayList<>();
             for (Categoria categoria : listaCategorias) {
-                CategoriaResponseDto dto = categoriaMapper.toResponseDto(categoria);
+                CategoriaResponse dto = categoriaMapper.toResponseDto(categoria);
                 listaDto.add(dto);
             }
 
@@ -96,7 +96,7 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarCategoria(@PathVariable Long id, @RequestBody CategoriaDto categoriaDto) {
+    public ResponseEntity<?> actualizarCategoria(@PathVariable Long id, @RequestBody CategoriaRequest categoriaRequest) {
         try {
             Optional<Categoria> categoriaExistente = categoriaService.findById(id);
             if (categoriaExistente.isEmpty()) {
@@ -104,10 +104,10 @@ public class CategoriaController {
             }
 
             Categoria categoria = categoriaExistente.get();
-            categoria.setDenominacion(categoriaDto.getDenominacion());
+            categoria.setDenominacion(categoriaRequest.getDenominacion());
 
-            if (categoriaDto.getCategoriaPadreId() != null) {
-                Optional<Categoria> categoriaPadre = categoriaService.findById(categoriaDto.getCategoriaPadreId());
+            if (categoriaRequest.getCategoriaPadreId() != null) {
+                Optional<Categoria> categoriaPadre = categoriaService.findById(categoriaRequest.getCategoriaPadreId());
                 if (categoriaPadre.isEmpty()) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Categoría padre no encontrada");
                 }
@@ -117,7 +117,7 @@ public class CategoriaController {
             }
 
             Categoria actualizada = categoriaService.save(categoria);
-            CategoriaResponseDto dto = categoriaMapper.toResponseDto(actualizada);
+            CategoriaResponse dto = categoriaMapper.toResponseDto(actualizada);
             return ResponseEntity.ok(dto);
         } catch (Exception e) {
             System.out.println("ERROR ACTUALIZANDO CATEGORIA");
@@ -145,7 +145,7 @@ public class CategoriaController {
     public ResponseEntity<?> obtenerSubcategorias(@PathVariable Long padreId) {
         try {
             List<Categoria> subcategorias = categoriaService.findByCategoriaPadreId(padreId);
-            List<CategoriaResponseDto> listaDto = new ArrayList<>();
+            List<CategoriaResponse> listaDto = new ArrayList<>();
             for (Categoria cat : subcategorias) {
                 listaDto.add(categoriaMapper.toResponseDto(cat));
             }

@@ -1,6 +1,6 @@
 package org.emiliano.elbuensaborback.dto;
 
-public record CategoriaResponseDto(
+public record CategoriaResponse(
         Long id,
         String denominacion,
         CategoriaPadreDto categoriaPadre

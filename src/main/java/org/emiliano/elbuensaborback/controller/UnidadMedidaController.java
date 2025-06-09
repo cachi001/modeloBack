@@ -1,9 +1,6 @@
 package org.emiliano.elbuensaborback.controller;
 
-import org.emiliano.elbuensaborback.dto.UnidadMedidaDto;
 import org.emiliano.elbuensaborback.entity.UnidadMedida;
-import org.emiliano.elbuensaborback.mapper.UnidadMedidaMapper;
-import org.emiliano.elbuensaborback.repository.UnidadMedidaRepository;
 import org.emiliano.elbuensaborback.service.UnidadMedidaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,20 +15,17 @@ import java.util.List;
 public class UnidadMedidaController {
 
     private final UnidadMedidaService unidadMedidaService;
-    private final UnidadMedidaMapper unidadMedidaMapper;
-
 
     public UnidadMedidaController (
-            UnidadMedidaService unidadMedidaService,
-            UnidadMedidaMapper unidadMedidaMapper
+            UnidadMedidaService unidadMedidaService
     ){
         this.unidadMedidaService = unidadMedidaService;
-        this.unidadMedidaMapper = unidadMedidaMapper;
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> obtenerUnidadesMedida (){
         try{
+            System.out.println("OBTENIENDO UNIDADES DE MEDIDA");
             List<UnidadMedida> unidadMedidaList = unidadMedidaService.findAll();
 
             return ResponseEntity.ok(unidadMedidaList);

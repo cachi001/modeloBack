@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UnidadMedidaDto {
-
+public class UnidadMedidaRequest {
     private String denominacion;
 }

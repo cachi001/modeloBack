@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticuloInsumoDto {
+public class ArticuloInsumoRequest {
     private String denominacion;
     private BigDecimal precioCompra;
     private Integer stockActual;
     private Integer stockMaximo;
     private Boolean esParaElaborar;
     private BigDecimal precioVenta;
-    private UnidadMedidaDto unidadMedida;
-    private CategoriaDto categoria;
+    private UnidadMedidaRequest unidadMedida;
+    private CategoriaRequest categoria;
 }

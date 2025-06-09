@@ -1,14 +1,17 @@
 package org.emiliano.elbuensaborback.service;
 
-import org.emiliano.elbuensaborback.dto.ArticuloInsumoDto;
+import org.emiliano.elbuensaborback.dto.ArticuloInsumoBaseResponse;
+import org.emiliano.elbuensaborback.dto.ArticuloInsumoRequest;
 import org.emiliano.elbuensaborback.entity.ArticuloInsumo;
 import org.emiliano.elbuensaborback.entity.Categoria;
 import org.emiliano.elbuensaborback.entity.UnidadMedida;
+import org.emiliano.elbuensaborback.mapper.ArticuloInsumoMapper;
 import org.emiliano.elbuensaborback.repository.ArticuloInsumoRepository;
 import org.emiliano.elbuensaborback.repository.CategoriaRepository;
 import org.emiliano.elbuensaborback.repository.UnidadMedidaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +22,18 @@ public class ArticuloInsumoService extends BaseServiceImpl<ArticuloInsumo, Long>
     private final ArticuloInsumoRepository articuloInsumoRepository;
     private final CategoriaRepository categoriaRepository;
     private final UnidadMedidaRepository unidadMedidaRepository;
+    private final ArticuloInsumoMapper articuloInsumoMapper;
 
     public ArticuloInsumoService(
             ArticuloInsumoRepository articuloInsumoRepository,
             CategoriaRepository categoriaRepository,
-            UnidadMedidaRepository unidadMedidaRepository ) {
+            UnidadMedidaRepository unidadMedidaRepository,
+            ArticuloInsumoMapper articuloInsumoMapper) {
         super(articuloInsumoRepository);
         this.articuloInsumoRepository = articuloInsumoRepository;
         this.categoriaRepository = categoriaRepository;
         this.unidadMedidaRepository = unidadMedidaRepository;
+        this.articuloInsumoMapper = articuloInsumoMapper;
     }
 
     @Override
@@ -55,7 +61,7 @@ public class ArticuloInsumoService extends BaseServiceImpl<ArticuloInsumo, Long>
         super.deleteById(aLong);
     }
 
-    public ArticuloInsumo crear(ArticuloInsumoDto dto) {
+    public ArticuloInsumo crear(ArticuloInsumoRequest dto) {
         ArticuloInsumo insumo = new ArticuloInsumo();
         insumo.setDenominacion(dto.getDenominacion());
         insumo.setPrecioCompra(dto.getPrecioCompra());
@@ -78,20 +84,20 @@ public class ArticuloInsumoService extends BaseServiceImpl<ArticuloInsumo, Long>
         insumo.setCategoria(categoria);
         insumo.setUnidadMedida(unidadMedida);
 
-        ArticuloInsumo insumoGuardado = articuloInsumoRepository.save(insumo);
-
-        return insumoGuardado;
+        return articuloInsumoRepository.save(insumo);
 
     }
-    public List<ArticuloInsumo> listarTodos() {
-        return articuloInsumoRepository.findAll();
+    public List<ArticuloInsumoBaseResponse> obtenerInsumosBase() {
+        List<ArticuloInsumo> insumos = articuloInsumoRepository.findAll();
+
+        return articuloInsumoMapper.toBaseResponseList(insumos);
     }
 
     public ArticuloInsumo obtenerPorId(Long id) {
         return articuloInsumoRepository.findById(id).orElse(null);
     }
 
-    public ArticuloInsumo actualizar(Long id, ArticuloInsumoDto dto) {
+    public ArticuloInsumo actualizar(Long id, ArticuloInsumoRequest dto) {
         Optional<ArticuloInsumo> optionalInsumo = articuloInsumoRepository.findById(id);
         if (optionalInsumo.isEmpty()) {
             return null;
@@ -122,11 +128,4 @@ public class ArticuloInsumoService extends BaseServiceImpl<ArticuloInsumo, Long>
         return articuloInsumoRepository.save(insumo);
     }
 
-    public boolean eliminar(Long id) {
-        if (articuloInsumoRepository.existsById(id)) {
-            articuloInsumoRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
 }

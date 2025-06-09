@@ -15,10 +15,17 @@ public class Domicilio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String calle;
+
+    @Column(nullable = false)
     private Integer numero;
+
+    @Column(nullable = false)
     private Integer codigoPostal;
 
+    @Column(nullable = false)
+    private boolean activo = true;
     @ManyToOne
     @JoinColumn(name = "localidad_id")
     private Localidad localidad;

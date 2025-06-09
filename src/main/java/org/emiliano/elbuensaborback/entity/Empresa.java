@@ -14,10 +14,13 @@ public class Empresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
+    @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false)
     private String razonSocial;
 
+    @Column(nullable = false)
     private Integer cuit;
 
 }

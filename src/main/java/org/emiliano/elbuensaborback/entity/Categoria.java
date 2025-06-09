@@ -21,6 +21,10 @@ public class Categoria {
 
     private String denominacion;
 
+    @Column(nullable = false)
+    private boolean activo = true;
+
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "categoria_padre_id")

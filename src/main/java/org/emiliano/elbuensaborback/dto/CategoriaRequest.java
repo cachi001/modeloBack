@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoriaDto {
+public class CategoriaRequest {
     private String denominacion;
     private Long categoriaPadreId;
 }

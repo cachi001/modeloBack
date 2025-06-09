@@ -1,6 +1,7 @@
 package org.emiliano.elbuensaborback.controller;
 
-import org.emiliano.elbuensaborback.dto.ArticuloInsumoDto;
+import org.emiliano.elbuensaborback.dto.ArticuloInsumoBaseResponse;
+import org.emiliano.elbuensaborback.dto.ArticuloInsumoRequest;
 import org.emiliano.elbuensaborback.entity.ArticuloInsumo;
 import org.emiliano.elbuensaborback.repository.ArticuloInsumoRepository;
 import org.emiliano.elbuensaborback.service.ArticuloInsumoService;
@@ -22,7 +23,7 @@ public class ArticuloInsumoController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearInsumo(@RequestBody ArticuloInsumoDto articuloInsumoDto) {
+    public ResponseEntity<?> crearInsumo(@RequestBody ArticuloInsumoRequest articuloInsumoDto) {
         try {
             System.out.println("CREANDO ARTICULO INSUMO");
             ArticuloInsumo nuevoInsumo = articuloInsumoService.crear(articuloInsumoDto);
@@ -35,12 +36,23 @@ public class ArticuloInsumoController {
     @GetMapping("/all")
     public ResponseEntity<List<ArticuloInsumo>> obtenerInsumos() {
         try {
-            List<ArticuloInsumo> insumos = articuloInsumoService.listarTodos();
+            List<ArticuloInsumo> insumos = articuloInsumoService.findAll();
             return ResponseEntity.ok(insumos);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/base/all")
+    public ResponseEntity<List<ArticuloInsumoBaseResponse>> obtenerInsumosBase() {
+        try {
+            List<ArticuloInsumoBaseResponse> insumos = articuloInsumoService.obtenerInsumosBase();
+            return ResponseEntity.ok(insumos);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerInsumoPorId(@PathVariable Long id) {
@@ -56,7 +68,7 @@ public class ArticuloInsumoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarInsumo(@PathVariable Long id, @RequestBody ArticuloInsumoDto articuloInsumoDto) {
+    public ResponseEntity<?> actualizarInsumo(@PathVariable Long id, @RequestBody ArticuloInsumoRequest articuloInsumoDto) {
         try {
             ArticuloInsumo actualizado = articuloInsumoService.actualizar(id, articuloInsumoDto);
             if (actualizado == null) {
@@ -71,10 +83,7 @@ public class ArticuloInsumoController {
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarInsumo(@PathVariable Long id) {
         try {
-            boolean eliminado = articuloInsumoService.eliminar(id);
-            if (!eliminado) {
-                return ResponseEntity.notFound().build();
-            }
+            articuloInsumoService.deleteById(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al eliminar el insumo: " + e.getMessage());

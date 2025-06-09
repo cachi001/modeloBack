@@ -23,21 +23,34 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private LocalTime horaEstimadaFinalizacion;
+
+    @Column(nullable = false)
     private BigDecimal total;
+
+    @Column(nullable = false)
     private BigDecimal totalCosto;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EstadoPedido estadoPedido;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoEnvio tipoEnvio;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private FormaDePago formaDePago;
 
+    @Column(nullable = false)
     private LocalDate fechaPedido;
 
+    @Column(nullable = false)
+    private boolean activo = true;
+
+    @Column(nullable = false)
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id")

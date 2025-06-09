@@ -16,14 +16,20 @@ public class Sucursal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false)
     private LocalTime horaApertura;
 
+    @Column(nullable = false)
     private LocalTime horaCierre;
 
     @ManyToOne
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
+
+    @Column(nullable = false)
+    private boolean activo = true;
 
 }
