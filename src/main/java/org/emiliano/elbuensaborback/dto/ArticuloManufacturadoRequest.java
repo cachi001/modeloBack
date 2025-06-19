@@ -19,5 +19,6 @@ public class ArticuloManufacturadoRequest {
     private String preparacion;
     private UnidadMedidaRequest unidadMedida;
     private CategoriaRequest categoria;
-    private List<ArticuloManufacturadoDetalle> articuloManufacturadoDetalles;
+    private List<ImagenArticuloRequest> imagenes;
+    private List<ArticuloManufacturadoDetalleRequest> articuloManufacturadoDetalles;
 }

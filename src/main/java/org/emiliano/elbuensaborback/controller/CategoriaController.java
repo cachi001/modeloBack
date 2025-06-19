@@ -63,7 +63,7 @@ public class CategoriaController {
             } else {
                 System.out.println("Sin categoría padre.");
             }
-
+            System.out.println("Estado: " + categoriaDtoRespuesta.activo());
 
             return ResponseEntity.ok(categoriaDtoRespuesta);
         } catch (Exception e) {
@@ -151,6 +151,19 @@ public class CategoriaController {
             }
             return ResponseEntity.ok(listaDto);
         } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+        }
+    }
+
+    @PutMapping("/switch-state/{id}")
+    public ResponseEntity<?> cambiarEstado(@PathVariable Long id) {
+        try {
+            System.out.println("CAMBIANDO ESTADO CATEGORIA...");
+
+            return ResponseEntity.ok(categoriaMapper.toResponseDto(categoriaService.cambiarEstadoCategoria(id)));
+        } catch (Exception e) {
+            System.out.println("ERROR CAMBIANDO ESTADO CATEGORIA CONTROLLER");
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
         }

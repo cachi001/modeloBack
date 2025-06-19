@@ -21,12 +21,12 @@ public class Categoria {
 
     private String denominacion;
 
+    @Builder.Default
     @Column(nullable = false)
-    private boolean activo = true;
-
+    private Boolean activo = true;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "categoria_padre_id")
     private Categoria categoriaPadre;
 
@@ -36,7 +36,7 @@ public class Categoria {
     private List<Categoria> subcategorias = new ArrayList<>();
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "categoria_sucursal",
             joinColumns = @JoinColumn(name = "categoria_id"),

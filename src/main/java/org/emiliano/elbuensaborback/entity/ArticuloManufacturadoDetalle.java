@@ -17,7 +17,7 @@ public class ArticuloManufacturadoDetalle {
 
     private Integer cantidad;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "articulo_insumo_id")
     private ArticuloInsumo articuloInsumo;
 

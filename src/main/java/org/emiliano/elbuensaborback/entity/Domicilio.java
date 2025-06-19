@@ -24,9 +24,11 @@ public class Domicilio {
     @Column(nullable = false)
     private Integer codigoPostal;
 
+    @Builder.Default
     @Column(nullable = false)
-    private boolean activo = true;
-    @ManyToOne
+    private Boolean activo = true;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "localidad_id")
     private Localidad localidad;
 }

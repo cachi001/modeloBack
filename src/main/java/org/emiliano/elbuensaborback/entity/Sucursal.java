@@ -25,11 +25,12 @@ public class Sucursal {
     @Column(nullable = false)
     private LocalTime horaCierre;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
+    @Builder.Default
     @Column(nullable = false)
-    private boolean activo = true;
+    private Boolean activo = true;
 
 }

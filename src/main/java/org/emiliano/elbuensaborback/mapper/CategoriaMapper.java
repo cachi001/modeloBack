@@ -24,6 +24,7 @@ public interface CategoriaMapper {
         return new CategoriaResponse(
                 categoria.getId(),
                 categoria.getDenominacion(),
+                categoria.getActivo(),
                 padreDto
         );
     }

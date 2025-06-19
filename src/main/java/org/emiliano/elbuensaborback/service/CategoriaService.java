@@ -42,10 +42,18 @@ public class CategoriaService extends BaseServiceImpl<Categoria, Long>{
     public List<Categoria> findByCategoriaPadreId(Long padreId) {
         return categoriaRepository.findByCategoriaPadreId(padreId);
     }
-    public Categoria findByCategoria(String denominacion){
-        Categoria categoria = categoriaRepository.findByDenominacion(denominacion)
-                .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
 
-        return categoria;
+    public Categoria cambiarEstadoCategoria(Long id){
+        Optional<Categoria> categoria = categoriaRepository.findById(id);
+
+        if (categoria.isEmpty()){
+            System.out.println("Categoria No encontrada");
+        }
+
+        System.out.println("ESTADO "+ categoria.get().getActivo());
+        categoria.get().setActivo(!categoria.get().getActivo());
+        System.out.println("ESTADO 2 "+ categoria.get().getActivo());
+        return categoriaRepository.save(categoria.get());
     }
+
 }

@@ -23,7 +23,7 @@ public class DetallePedido {
     @Column(nullable = false)
     private BigDecimal subtotal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "articulo_id")
     private Articulo articulo;
 

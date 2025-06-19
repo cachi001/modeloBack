@@ -41,67 +41,13 @@ public class ArticuloInsumoService extends BaseServiceImpl<ArticuloInsumo, Long>
         return super.save(entity);
     }
 
-    @Override
-    public ArticuloInsumo update(ArticuloInsumo entity, Long aLong) {
-        return super.update(entity, aLong);
-    }
-
-    @Override
-    public Optional<ArticuloInsumo> findById(Long aLong) {
-        return super.findById(aLong);
-    }
-
-    @Override
-    public List<ArticuloInsumo> findAll() {
-        return super.findAll();
-    }
-
-    @Override
-    public void deleteById(Long aLong) {
-        super.deleteById(aLong);
-    }
-
-    public ArticuloInsumo crear(ArticuloInsumoRequest dto) {
-        ArticuloInsumo insumo = new ArticuloInsumo();
-        insumo.setDenominacion(dto.getDenominacion());
-        insumo.setPrecioCompra(dto.getPrecioCompra());
-        insumo.setStockActual(dto.getStockActual());
-        insumo.setStockMaximo(dto.getStockMaximo());
-        insumo.setEsParaElaborar(dto.getEsParaElaborar());
-        insumo.setPrecioVenta(dto.getPrecioVenta());
-
-        // Cargar relaciones desde DB
-        Categoria categoria = categoriaRepository.findByDenominacion(dto.getCategoria().getDenominacion())
-                .orElseThrow(() -> new RuntimeException("Categoría no encontrada: " + dto.getCategoria().getDenominacion()));
-
-        UnidadMedida unidadMedida = unidadMedidaRepository.findByDenominacion(dto.getUnidadMedida().getDenominacion())
-                .orElseGet(() -> {
-                    UnidadMedida nuevaUnidad = new UnidadMedida();
-                    nuevaUnidad.setDenominacion(dto.getUnidadMedida().getDenominacion().toLowerCase());
-                    return unidadMedidaRepository.save(nuevaUnidad);
-                });
-
-        insumo.setCategoria(categoria);
-        insumo.setUnidadMedida(unidadMedida);
-
-        return articuloInsumoRepository.save(insumo);
-
-    }
-    public List<ArticuloInsumoBaseResponse> obtenerInsumosBase() {
-        List<ArticuloInsumo> insumos = articuloInsumoRepository.findAll();
-
-        return articuloInsumoMapper.toBaseResponseList(insumos);
-    }
-
-    public ArticuloInsumo obtenerPorId(Long id) {
-        return articuloInsumoRepository.findById(id).orElse(null);
-    }
-
-    public ArticuloInsumo actualizar(Long id, ArticuloInsumoRequest dto) {
+    public ArticuloInsumo actualizar(ArticuloInsumoRequest dto, Long id) {
         Optional<ArticuloInsumo> optionalInsumo = articuloInsumoRepository.findById(id);
+
         if (optionalInsumo.isEmpty()) {
             return null;
         }
+
         ArticuloInsumo insumo = optionalInsumo.get();
 
         insumo.setDenominacion(dto.getDenominacion());
@@ -125,7 +71,43 @@ public class ArticuloInsumoService extends BaseServiceImpl<ArticuloInsumo, Long>
                 });
         insumo.setUnidadMedida(unidadMedida);
 
-        return articuloInsumoRepository.save(insumo);
+
+        return super.update(articuloInsumoMapper.toEntity(dto), id);
     }
+
+    @Override
+    public Optional<ArticuloInsumo> findById(Long id) {
+        return super.findById(id);
+    }
+
+    @Override
+    public List<ArticuloInsumo> findAll() {
+        return super.findAll();
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        super.deleteById(id);
+    }
+
+    public List<ArticuloInsumoBaseResponse> obtenerInsumosBase() {
+        List<ArticuloInsumo> insumos = articuloInsumoRepository.findAll();
+        return articuloInsumoMapper.toBaseResponseList(insumos);
+    }
+
+    public ArticuloInsumo cambiarEstadoInsumo(Long id){
+        Optional<ArticuloInsumo> insumo = articuloInsumoRepository.findById(id);
+
+        if (insumo.isEmpty()){
+            System.out.println("Insumo No encontrado");
+        }
+
+        System.out.println("ESTADO"+ insumo.get().getActivo());
+        insumo.get().setActivo(!insumo.get().getActivo());
+        System.out.println("ESTADO 2"+ insumo.get().getActivo());
+        return articuloInsumoRepository.save(insumo.get());
+    }
+
+
 
 }

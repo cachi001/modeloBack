@@ -20,6 +20,7 @@ public class Usuario {
     @Column(nullable = false)
     private String username;
 
+    @Builder.Default
     @Column(nullable = false)
-    private boolean activo = true;
+    private Boolean activo = true;
 }

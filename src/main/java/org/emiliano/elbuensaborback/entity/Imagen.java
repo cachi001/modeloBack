@@ -24,6 +24,6 @@ public abstract class Imagen implements Serializable {
     private String denominacion;
 
     @Column(nullable = false)
-    private boolean activo = true;
+    private String urlImagen;
 
 }

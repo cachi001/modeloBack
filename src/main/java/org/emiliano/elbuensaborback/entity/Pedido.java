@@ -47,8 +47,9 @@ public class Pedido {
     @Column(nullable = false)
     private LocalDate fechaPedido;
 
+    @Builder.Default
     @Column(nullable = false)
-    private boolean activo = true;
+    private Boolean activo = true;
 
     @Column(nullable = false)
     @Builder.Default
@@ -60,15 +61,15 @@ public class Pedido {
     @JoinColumn(name = "factura_id")
     private Factura factura;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sucursal_id")
     private Sucursal sucursal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "domicilio_id" )
     private Domicilio domicilio;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 

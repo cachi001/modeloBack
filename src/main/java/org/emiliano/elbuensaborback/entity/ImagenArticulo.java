@@ -1,5 +1,6 @@
 package org.emiliano.elbuensaborback.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +16,9 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class ImagenArticulo extends Imagen{
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "articulo_id")
+    @JsonBackReference
     private Articulo articulo;
 
 }

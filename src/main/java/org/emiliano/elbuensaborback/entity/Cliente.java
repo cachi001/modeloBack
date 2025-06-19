@@ -38,7 +38,7 @@ public class Cliente {
     private Usuario usuario;
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "cliente_domicilio",
             joinColumns = @JoinColumn (name = "cliente_id"),

@@ -40,13 +40,12 @@ public class Promocion {
     @Column(nullable = false)
     private BigDecimal precioPromocional;
 
-
     @OneToOne
     @JoinColumn(name = "tipo_promocion_id")
     private TipoPromocion tipoPromocion;
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "promocion_sucursal",
             joinColumns = @JoinColumn(name = "promocion_id"),

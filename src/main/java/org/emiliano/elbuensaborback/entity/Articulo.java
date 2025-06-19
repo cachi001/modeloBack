@@ -1,5 +1,6 @@
 package org.emiliano.elbuensaborback.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -24,19 +25,25 @@ public abstract class Articulo implements Serializable {
     private String denominacion;
     private BigDecimal precioVenta;
 
+    @Builder.Default
     @Column(nullable = false)
-    private boolean activo = true;
+    private Boolean activo = true;
 
-    @ManyToOne
+    @Builder.Default
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ImagenArticulo> imagenes = new ArrayList<>();
+
+    @ManyToOne()
     @JoinColumn(name = "unidad_medida_id")
     private UnidadMedida unidadMedida;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "articulo_promocion",
             joinColumns = @JoinColumn(name = "articulo_id"),

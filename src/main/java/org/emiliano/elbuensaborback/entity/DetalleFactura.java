@@ -24,17 +24,16 @@ public class DetalleFactura {
     @Column(nullable = false)
     private BigDecimal subtotal;
 
-    @ManyToOne
-    @JoinColumn(name = "articulo_id")
-    private Articulo articulo;
-
     @Column(nullable = false)
     private BigDecimal precioUnitario;
 
     @Column(nullable = false)
     private String denominacionArticulo;
 
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "articulo_id")
+    private Articulo articulo;
+    @ManyToOne()
     @JoinColumn(name = "factura_id")
     private Factura factura;
 }
